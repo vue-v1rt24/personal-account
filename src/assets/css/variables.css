@@ -1,2 +1,4 @@
 :root {
+  --transition: 0.3s;
+  --primary: rgb(40, 132, 236);
 }

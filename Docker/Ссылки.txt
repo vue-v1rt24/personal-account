@@ -3,3 +3,6 @@ http://localhost:3000
 
 Swagger:
 http://localhost:3000/api/documentation
+
+Гит Хаб:
+https://github.com/dyakubovskiy/ips-service
