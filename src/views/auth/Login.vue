@@ -17,7 +17,7 @@ const router = useRouter();
 //
 const formField = reactive({
   email: 'user2@example.com',
-  password: '123!',
+  password: '123',
 });
 
 //
