@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Input from '@/components/ui/Input.vue';
 import Button from '@/components/ui/Button.vue';
 
 import { fetchUtil } from '@/utils/fetchUtil';
-
-import { isFormValid } from '@/utils/isFormValid.util';
+import { isFormValid, hasError } from '@/utils/formValidation.util';
 
 import type { TypeLogin } from '@/types/auth.type';
 
@@ -21,10 +20,18 @@ const formField = reactive({
 });
 
 //
+const isSubmitted = ref(false);
+const isLoading = ref(false);
+
+//
 const handlerLogin = async () => {
+  isSubmitted.value = true;
+
   if (!isFormValid(formField)) {
     return alert('Заполните все поля');
   }
+
+  isLoading.value = true;
 
   try {
     const res = await fetchUtil<TypeLogin>('auth/login', 'POST', formField);
@@ -33,6 +40,9 @@ const handlerLogin = async () => {
     router.push('/');
   } catch (error) {
     console.log(error);
+  } finally {
+    isSubmitted.value = false;
+    isLoading.value = false;
   }
 };
 </script>
@@ -43,16 +53,33 @@ const handlerLogin = async () => {
 
     <form @submit.prevent="handlerLogin">
       <div class="vstack">
-        <Input type="email" v-model="formField.email" placeholder="Почта" />
-        <Input type="password" v-model="formField.password" placeholder="Пароль" />
+        <Input
+          type="email"
+          v-model="formField.email"
+          placeholder="Почта"
+          :class="{ error: hasError(formField.email, isSubmitted) }"
+        />
+
+        <Input
+          type="password"
+          v-model="formField.password"
+          placeholder="Пароль"
+          :class="{ error: hasError(formField.password, isSubmitted) }"
+        />
       </div>
 
       <div class="hstack">
-        <Button type="submit" title="Войти" class="hstack__btn" />
+        <Button
+          type="submit"
+          title="Войти"
+          :loading="isLoading"
+          :disabled="isLoading"
+          class="hstack__btn"
+        />
 
         <div>
           Ещё нет учётной записи?
-          <RouterLink :to="{ name: 'register' }">
+          <RouterLink :to="{ name: 'register' }" :class="{ disabled_link: isLoading }">
             <Button title="Зарегистрироваться" />
           </RouterLink>
         </div>
@@ -68,6 +95,7 @@ const handlerLogin = async () => {
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 0 10px 0 #ccc;
+  margin: 50px 0;
 
   /* h1 */
   h1 {
@@ -95,5 +123,17 @@ const handlerLogin = async () => {
     width: 100%;
     margin-bottom: 10px;
   }
+}
+
+/*  */
+
+.disabled_link {
+  pointer-events: none;
+}
+
+/*  */
+
+.error {
+  border: 1px solid red;
 }
 </style>
