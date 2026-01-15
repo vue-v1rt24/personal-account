@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import Input from '@/components/ui/Input.vue';
 import Button from '@/components/ui/Button.vue';
 
-import { fetchUtil } from '@/utils/fetchUtil';
+import { fetchData } from '@/utils/fetchData.utils';
 import { isFormValid, hasError } from '@/utils/formValidation.util';
 
 //
@@ -34,7 +34,7 @@ const handlerRegister = async () => {
   isLoading.value = true;
 
   try {
-    const res = await fetchUtil('auth/register', 'POST', formField);
+    const res = await fetchData('auth/register', 'POST', formField);
     console.log(res);
 
     router.push('/');

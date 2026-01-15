@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useUserStore } from '@/stores/user.store';
 import Home from '@/views/Home.vue';
 
 const router = createRouter({
@@ -25,4 +26,23 @@ const router = createRouter({
   ],
 });
 
+// Проверка авторизации
+router.beforeEach((to, from) => {
+  const userStore = useUserStore();
+
+  if (!userStore.isUserAuth && to.meta.layout !== 'Auth') {
+    return {
+      name: 'login',
+      query: {
+        code: 'auth',
+      },
+    };
+  } else if (userStore.isUserAuth && to.meta.layout === 'Auth') {
+    return {
+      name: 'home',
+    };
+  }
+});
+
+//
 export default router;

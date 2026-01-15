@@ -1,8 +1,5 @@
-// import router from '@/router';
-// import {store} from '../store'; // для хранилища(store) сделана типизация, поэтому store импортируем так
-
-const serverUrl = <string>import.meta.env.VITE_API_URL;
-// const tokenEnv = <string>import.meta.env.VITE_TOKEN; // записано название, которое записываем в localStorage и в него помещаем токен
+import router from '@/router/index';
+import { useUserStore } from '@/stores/user.store';
 
 interface IData {
   headers: {
@@ -13,16 +10,21 @@ interface IData {
 }
 
 //
-export const fetchUtil = async <T>(
+export const fetchData = async <T>(
   url: RequestInfo,
   method: 'GET' | 'POST' = 'GET',
   data?: object | FormData,
 ): Promise<T> => {
-  const TOKEN = ''; // localStorage.getItem(tokenEnv);
+  // Хранилище пользователя
+  const userStore = useUserStore();
 
+  // Адрес запроса
+  const serverUrl = <string>import.meta.env.VITE_API_URL;
+
+  // Заголовки
   let bodyData: IData = {
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${userStore.getToken}`,
     },
   };
 
@@ -45,7 +47,14 @@ export const fetchUtil = async <T>(
 
     if (!resData.ok) {
       if (resData.status === 401) {
-        // await router.push({ name: 'Login', query: { message: 'notAuthorized' } });
+        await router.push({
+          name: 'Login',
+          query: {
+            code: 'auth',
+            redirect: router.currentRoute.value.fullPath,
+          },
+        });
+
         // store.commit('auth/logout');
       }
 

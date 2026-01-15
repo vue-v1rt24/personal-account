@@ -54,13 +54,13 @@ onMounted(async () => {
 
 <style lang="css" scoped>
 .tariffs {
-  padding: 50px 0;
+  padding: 30px 0;
 
   /* h1 */
   h1 {
-    font-size: 60px;
-    text-align: center;
-    margin-bottom: 60px;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
   }
 }
 

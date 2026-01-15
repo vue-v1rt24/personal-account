@@ -1,17 +1,25 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { useRouter, useRoute, type LocationQuery } from 'vue-router';
+
+import { useUserStore } from '@/stores/user.store';
 
 import Input from '@/components/ui/Input.vue';
 import Button from '@/components/ui/Button.vue';
 
-import { fetchUtil } from '@/utils/fetchUtil';
 import { isFormValid, hasError } from '@/utils/formValidation.util';
-
-import type { TypeLogin } from '@/types/auth.type';
+import { type TypeCodes, codeMessage } from '@/utils/codeMessage.util';
 
 //
 const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
+
+//
+const { redirect, code } = route.query as LocationQuery & {
+  redirect: string;
+  code: TypeCodes;
+};
 
 //
 const formField = reactive({
@@ -28,16 +36,14 @@ const handlerLogin = async () => {
   isSubmitted.value = true;
 
   if (!isFormValid(formField)) {
-    return alert('Заполните все поля');
+    codeMessage('notEmptyFields', 'warning');
   }
 
   isLoading.value = true;
 
   try {
-    const res = await fetchUtil<TypeLogin>('auth/login', 'POST', formField);
-    console.log(res);
-
-    router.push('/');
+    await userStore.setUser(formField);
+    router.push(redirect || '/');
   } catch (error) {
     console.log(error);
   } finally {
@@ -45,6 +51,18 @@ const handlerLogin = async () => {
     isLoading.value = false;
   }
 };
+
+// Вывод сообщения
+const outputMessage = () => {
+  if (code) {
+    codeMessage(code, 'default');
+  }
+};
+
+//
+onMounted(() => {
+  outputMessage();
+});
 </script>
 
 <template>

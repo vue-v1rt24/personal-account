@@ -36,3 +36,10 @@ body {
   padding: 0 30px;
   margin: 0 auto;
 }
+
+/*  */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
