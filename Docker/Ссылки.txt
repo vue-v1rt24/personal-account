@@ -16,3 +16,7 @@ const formField = reactive({
   password: '123',
   address: 'Москва',
 });
+
+Администратор:
+Логин: admin@example.com
+Пароль: adminpass

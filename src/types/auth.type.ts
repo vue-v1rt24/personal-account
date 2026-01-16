@@ -1,4 +1,10 @@
-type TypeRole = 'user' | 'admin';
+// Роли пользователей
+export const USER_ROLES = {
+  ADMIN: 'admin',
+  USER: 'user',
+} as const;
+
+export type TypeRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 
 // Данные, приходящие при регистрации
 export type TypeRegister = {};
