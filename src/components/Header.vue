@@ -1,4 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Logout from '@/components/images/Logout.vue';
+import { useUserStore } from '@/stores/user.store';
+
+//
+const userStore = useUserStore();
+</script>
 
 <template>
   <header class="header">
@@ -8,6 +14,11 @@
       <li>Привет, пользователь</li>
       <li>
         <RouterLink to="/">Профиль</RouterLink>
+      </li>
+      <li>
+        <a @click.prevent="userStore.logout()" href="#">
+          <Logout />
+        </a>
       </li>
     </ul>
   </header>
