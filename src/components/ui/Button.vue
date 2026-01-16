@@ -11,12 +11,12 @@ const { type = 'button', btnClass = 'primary' } = defineProps<{
 
 //
 const emit = defineEmits<{
-  btnEvent: [];
+  btnClick: [];
 }>();
 </script>
 
 <template>
-  <button :type @click="emit('btnEvent')" :class="['btn', btnClass]">
+  <button :type :disabled="loading" @click="emit('btnClick')" :class="['btn', btnClass]">
     {{ title }}
 
     <span v-if="loading" class="btn_loading">

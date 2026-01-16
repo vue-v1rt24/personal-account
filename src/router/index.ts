@@ -23,6 +23,12 @@ const router = createRouter({
       component: () => import('@/views/auth/Login.vue'),
       meta: { layout: 'Auth' },
     },
+    {
+      path: '/subscribe',
+      name: 'subscribe',
+      component: () => import('@/views/Subscribe.vue'),
+      meta: { layout: 'Main' },
+    },
   ],
 });
 

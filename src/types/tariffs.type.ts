@@ -2,19 +2,19 @@
 export type TypeTariffsDTO = {
   id: string;
   name: string;
-  description: string | null;
-  price: number | null;
-  speed_mbps: number | null;
-  created_at: string | null;
+  description?: string;
+  price?: number;
+  speed_mbps?: number;
+  created_at?: string;
 };
 
 // Данные используемые в приложении
 export type TypeTariffs = {
   id: string;
   name: string;
-  desc: string | null;
-  price: number | null;
-  speed: number | null;
+  desc?: string;
+  price?: number;
+  speed?: number;
 };
 
 // Функция преобразования данных

@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue';
+type TypeRole = 'user' | 'admin';
 
 // Данные, приходящие при регистрации
 export type TypeRegister = {};
@@ -11,7 +11,7 @@ export type TypeLogin = {
     email: string;
     password_hash: string;
     address: string;
-    role: string;
+    role: TypeRole;
     created_at: string;
   };
   token: string;
@@ -20,10 +20,10 @@ export type TypeLogin = {
 // Данные пользователя для использования в приложении
 export type TypeUser = {
   id: string;
-  name: string | null;
+  name?: string;
   email: string;
-  address: string | null;
-  role: string;
+  address?: string;
+  role: TypeRole;
   token: string;
 };
 

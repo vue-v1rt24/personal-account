@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useTariffsStore } from '@/stores/tariffs.store';
+import { useSubscribesStore } from '@/stores/subscribes.store';
 
 import type { TypeTariffs } from '@/types/tariffs.type';
 
@@ -8,12 +9,28 @@ import TariffCard from '@/components/card/TariffCard.vue';
 
 import TariffCardSkeleton from '@/components/card/TariffCardSkeleton.vue';
 
-//
+// Хранилище
 const tariffsStore = useTariffsStore();
+const subscribesStore = useSubscribesStore();
 
 //
 const tariffs = ref<TypeTariffs[]>();
 const isLoading = ref(false);
+
+// Подписка на тариф
+const isSubscribing = ref(false);
+
+const subscribeTariff = async (id: string) => {
+  isSubscribing.value = true;
+
+  try {
+    await subscribesStore.subscribeToTariff(id);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isSubscribing.value = false;
+  }
+};
 
 //
 onMounted(async () => {
@@ -30,8 +47,8 @@ onMounted(async () => {
 
 <template>
   <div class="container">
-    <div class="tariffs">
-      <h1>Тарифы</h1>
+    <div class="tariffs wrap_section">
+      <h1 class="h1">Тарифы</h1>
 
       <!--  -->
 
@@ -42,7 +59,13 @@ onMounted(async () => {
 
         <template v-else>
           <template v-if="tariffs?.length">
-            <TariffCard v-for="tariff in tariffs" :key="tariff.id" v-bind="tariff" />
+            <TariffCard
+              v-for="tariff in tariffs"
+              :key="tariff.id"
+              :tariff
+              :is-subscribing="isSubscribing"
+              @subscribe="subscribeTariff"
+            />
           </template>
 
           <div v-else class="not_tariffs">Пока нет тарифов</div>
@@ -53,19 +76,6 @@ onMounted(async () => {
 </template>
 
 <style lang="css" scoped>
-.tariffs {
-  padding: 30px 0;
-
-  /* h1 */
-  h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 30px;
-  }
-}
-
-/*  */
-
 .cards {
   display: grid;
   grid-template-columns: 1fr 1fr;

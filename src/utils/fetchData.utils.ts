@@ -1,6 +1,6 @@
-import router from '@/router/index';
 import { useUserStore } from '@/stores/user.store';
 
+//
 interface IData {
   headers: {
     [key: string]: string;
@@ -12,7 +12,7 @@ interface IData {
 //
 export const fetchData = async <T>(
   url: RequestInfo,
-  method: 'GET' | 'POST' = 'GET',
+  method: 'GET' | 'POST' | 'DELETE' = 'GET',
   data?: object | FormData,
 ): Promise<T> => {
   // Хранилище пользователя
@@ -47,15 +47,7 @@ export const fetchData = async <T>(
 
     if (!resData.ok) {
       if (resData.status === 401) {
-        await router.push({
-          name: 'Login',
-          query: {
-            code: 'auth',
-            redirect: router.currentRoute.value.fullPath,
-          },
-        });
-
-        // store.commit('auth/logout');
+        userStore.logout();
       }
 
       throw res;

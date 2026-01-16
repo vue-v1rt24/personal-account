@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import router from '@/router/index';
 
 import { fetchData } from '@/utils/fetchData.utils';
 
@@ -9,7 +10,7 @@ import type { TypeLogin, TypeUser, TypeUserLoginForm } from '@/types/auth.type';
 export const useUserStore = defineStore(
   'user',
   () => {
-    const user = ref<TypeUser>();
+    const user = ref<TypeUser | null>(null);
 
     // === Вычисления
     const isUserAuth = computed(() => !!user.value);
@@ -30,21 +31,18 @@ export const useUserStore = defineStore(
       }
     };
 
-    /* const getUserEmail = () => {
-      if (!user.value?.email) {
-        throw new Error('Пользователь не авторизован');
-      }
+    // Выход из учётной записи
+    const logout = async () => {
+      user.value = null;
 
-      return user.value.email;
-    }; */
-
-    /* const getToken = () => {
-      if (!user.value?.token) {
-        throw new Error('Пользователь не авторизован');
-      }
-
-      return user.value.token;
-    }; */
+      await router.push({
+        name: 'login',
+        query: {
+          code: 'auth',
+          redirect: router.currentRoute.value.fullPath,
+        },
+      });
+    };
 
     // ===
     return {
@@ -53,6 +51,7 @@ export const useUserStore = defineStore(
       setUser,
       getUserEmail,
       getToken,
+      logout,
     };
   },
   {

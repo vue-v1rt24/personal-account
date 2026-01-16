@@ -11,6 +11,10 @@ const links = [
     to: '/',
     title: 'Главная',
   },
+  {
+    to: '/subscribe',
+    title: 'Мои подписки',
+  },
 ] as const satisfies TypeLink[];
 </script>
 
