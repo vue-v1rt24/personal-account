@@ -4,7 +4,12 @@ import router from '@/router/index';
 
 import { fetchData } from '@/utils/fetchData.utils';
 
-import type { TypeLogin, TypeUser, TypeUserLoginForm } from '@/types/auth.type';
+import {
+  USER_ROLES,
+  type TypeLogin,
+  type TypeUser,
+  type TypeUserLoginForm,
+} from '@/types/auth.type';
 
 //
 export const useUserStore = defineStore(
@@ -16,6 +21,7 @@ export const useUserStore = defineStore(
     const isUserAuth = computed(() => !!user.value);
     const getToken = computed(() => user.value?.token);
     const getUserEmail = computed(() => user.value?.email);
+    const isAdmin = computed(() => user.value?.role === USER_ROLES.ADMIN);
 
     // === Действия
     const setUser = async (userData: TypeUserLoginForm) => {
@@ -51,6 +57,7 @@ export const useUserStore = defineStore(
       setUser,
       getUserEmail,
       getToken,
+      isAdmin,
       logout,
     };
   },

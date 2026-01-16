@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { type RouteLocationRaw } from 'vue-router';
+import { useUserStore } from '@/stores/user.store';
 
+// Хранилище
+const userStore = useUserStore();
+
+// === Ссылки
 type TypeLink = {
   to: RouteLocationRaw;
   title: string;
 };
 
+// Ссылки для пользователей
 const links = [
   {
     to: '/',
@@ -16,17 +22,37 @@ const links = [
     title: 'Мои подписки',
   },
 ] as const satisfies TypeLink[];
+
+// Ссылки для админов
+const linksAdmin = [
+  {
+    to: '/invoices',
+    title: 'Список счетов',
+  },
+] as const satisfies TypeLink[];
 </script>
 
 <template>
   <div class="sidebar">
     <nav class="menu">
+      <!-- Ссылки пользователей -->
       <ul class="list">
         <li v-for="{ to, title } in links">
           <RouterLink :to>
             {{ title }}
           </RouterLink>
         </li>
+
+        <!-- Ссылки админов -->
+        <template v-if="userStore.isAdmin">
+          <hr />
+
+          <li v-for="{ to, title } in linksAdmin">
+            <RouterLink :to>
+              {{ title }}
+            </RouterLink>
+          </li>
+        </template>
       </ul>
     </nav>
   </div>
@@ -45,8 +71,12 @@ const links = [
 .menu {
   position: sticky;
   top: 0;
-
   height: 100vh;
+
+  /* hr */
+  hr {
+    width: 100%;
+  }
 }
 
 /*  */

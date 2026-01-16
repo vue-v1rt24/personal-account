@@ -29,6 +29,18 @@ const router = createRouter({
       component: () => import('@/views/Subscribe.vue'),
       meta: { layout: 'Main' },
     },
+    {
+      path: '/invoices',
+      name: 'invoices',
+      component: () => import('@/views/Invoices.vue'),
+      meta: { layout: 'Main', role: 'Admin' },
+    },
+    {
+      path: '/:notFound(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/404.vue'),
+      meta: { layout: 'Main' },
+    },
   ],
 });
 
@@ -47,6 +59,12 @@ router.beforeEach((to, from) => {
     return {
       name: 'home',
     };
+  } else {
+    if (!userStore.isAdmin && to.meta.role === 'Admin') {
+      return {
+        name: 'home',
+      };
+    }
   }
 });
 
