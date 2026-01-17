@@ -28,7 +28,7 @@ const emit = defineEmits<{
       <RouterLink to="/">Подробнее</RouterLink>
       <Button
         title="Подключить"
-        :loading="isSubscribing"
+        :disabled="isSubscribing"
         @btn-click="emit('subscribe', tariff.id)"
       />
     </div>

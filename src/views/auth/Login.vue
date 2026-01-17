@@ -8,7 +8,7 @@ import Input from '@/components/ui/Input.vue';
 import Button from '@/components/ui/Button.vue';
 
 import { isFormValid, hasError } from '@/utils/formValidation.util';
-import { type TypeCodes, codeMessage } from '@/utils/codeMessage.util';
+import { codeMessage } from '@/utils/codeMessage.util';
 
 //
 const router = useRouter();
@@ -18,7 +18,7 @@ const userStore = useUserStore();
 //
 const { redirect, code } = route.query as LocationQuery & {
   redirect: string;
-  code: TypeCodes;
+  code: string;
 };
 
 //
@@ -36,7 +36,7 @@ const handlerLogin = async () => {
   isSubmitted.value = true;
 
   if (!isFormValid(formField)) {
-    codeMessage('notEmptyFields', 'warning');
+    codeMessage('Заполните все поля', 'warning');
   }
 
   isLoading.value = true;
@@ -54,8 +54,8 @@ const handlerLogin = async () => {
 
 // Вывод сообщения
 const outputMessage = () => {
-  if (code) {
-    codeMessage(code, 'default');
+  if (code === 'auth') {
+    codeMessage('Необходимо авторизоваться', 'default');
   }
 };
 

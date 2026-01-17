@@ -8,15 +8,18 @@ import { priceFormat, dateFormat } from '@/utils/formatting.util';
 
 import type { TypeSubscribe } from '@/types/subscribe.type';
 
-//
+// Хранилище
 const subscribesStore = useSubscribesStore();
+
+//
 const subscribes = ref<TypeSubscribe[]>([]);
 const isLoading = ref(false);
 
 //
 onMounted(async () => {
+  isLoading.value = true;
+
   try {
-    isLoading.value = true;
     subscribes.value = await subscribesStore.subscribeList();
   } catch (error) {
     console.log(error);
@@ -62,10 +65,6 @@ onMounted(async () => {
 </template>
 
 <style lang="css" scoped>
-.subscribe__title {
-  margin-bottom: 20px;
-}
-
 .subscribe__title {
   margin-bottom: 70px;
 }

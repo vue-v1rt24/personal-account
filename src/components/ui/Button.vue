@@ -7,6 +7,7 @@ const { type = 'button', btnClass = 'primary' } = defineProps<{
   type?: 'button' | 'submit';
   btnClass?: 'primary';
   loading?: boolean;
+  disabled?: boolean;
 }>();
 
 //
@@ -16,7 +17,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <button :type :disabled="loading" @click="emit('btnClick')" :class="['btn', btnClass]">
+  <button :type :disabled @click="emit('btnClick')" :class="['btn', btnClass]">
     {{ title }}
 
     <span v-if="loading" class="btn_loading">
