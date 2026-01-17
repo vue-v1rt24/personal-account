@@ -23,8 +23,8 @@ const { redirect, code } = route.query as LocationQuery & {
 
 //
 const formField = reactive({
-  email: 'user2@example.com',
-  password: '123',
+  email: 'admin@example.com',
+  password: 'adminpass',
 });
 
 //
