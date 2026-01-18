@@ -13,7 +13,7 @@ const userStore = useUserStore();
     <ul class="header__links">
       <li>Привет, пользователь</li>
       <li>
-        <RouterLink to="/">Профиль</RouterLink>
+        <RouterLink :to="{ name: 'profile' }">Профиль</RouterLink>
       </li>
       <li>
         <a @click.prevent="userStore.logout()" href="#">

@@ -36,6 +36,12 @@ const router = createRouter({
       meta: { layout: 'Main', role: 'Admin' },
     },
     {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/views/Profile.vue'),
+      meta: { layout: 'Main' },
+    },
+    {
       path: '/:notFound(.*)*',
       name: 'NotFound',
       component: () => import('@/views/404.vue'),

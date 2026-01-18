@@ -12,7 +12,7 @@ interface IData {
 //
 export const fetchData = async <T>(
   url: RequestInfo,
-  method: 'GET' | 'POST' | 'DELETE' = 'GET',
+  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET',
   data?: object | FormData,
 ): Promise<T> => {
   // Хранилище пользователя

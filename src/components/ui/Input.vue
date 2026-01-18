@@ -2,13 +2,14 @@
 const { type = 'text' } = defineProps<{
   type?: 'text' | 'email' | 'password' | 'number';
   placeholder?: string;
+  readonly?: boolean;
 }>();
 
 const modelValue = defineModel({ required: true });
 </script>
 
 <template>
-  <input v-model="modelValue" :type name="#" :placeholder class="inp" />
+  <input v-model="modelValue" :type name="#" :placeholder class="inp" :readonly />
 </template>
 
 <style lang="css" scoped>
@@ -17,5 +18,11 @@ const modelValue = defineModel({ required: true });
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px 15px;
+
+  /* readonly */
+  &:read-only {
+    color: #666;
+    background-color: #f0f0f0;
+  }
 }
 </style>
