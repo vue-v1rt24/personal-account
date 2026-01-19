@@ -22,7 +22,7 @@ export const useUserStore = defineStore(
     const getToken = computed(() => user.value?.token);
     const getUserEmail = computed(() => user.value?.email);
     const isAdmin = computed(() => user.value?.role === USER_ROLES.ADMIN);
-    const userName = computed(() => user.value?.name ?? user.value?.email);
+    const userName = computed(() => user.value?.name ?? user.value?.email ?? 'Пользователь');
 
     // === Действия
     // Получение данных пользователя из БД
@@ -40,7 +40,7 @@ export const useUserStore = defineStore(
     };
 
     // Изменение данных пользователя
-    const updateUser = (userData: { name: string; email: string; address: string }) => {
+    const updateUser = (userData: Pick<TypeUser, 'name' | 'email' | 'address'>) => {
       user.value && (user.value = { ...user.value, ...userData });
     };
 

@@ -20,7 +20,7 @@ export const profileMapDTO = (dto: TypeProfileDTO): TypeProfile => {
   return {
     name: dto.name,
     email: dto.email,
-    address: dto.address ?? '',
+    address: dto.address,
   };
 };
 
