@@ -7,6 +7,9 @@ import {
   type TypeInvoice,
   invoiceMapDTO,
   type TypeInvoiceUser,
+  type TypeInvoiceMyDTO,
+  type TypeInvoiceMy,
+  invoiceMyMapDTO,
 } from '@/types/invoices.type';
 
 //
@@ -31,10 +34,20 @@ export const useInvoicesStore = defineStore('invoice', () => {
     }
   };
 
-  // Получение счетов пользователя (может сделать только пользователь)
+  // Получение счетов пользователей (может сделать только админ)
   const getUsersForInvoice = async (): Promise<TypeInvoiceUser[]> => {
     try {
       return await fetchData<TypeInvoiceUser[]>('invoices/users');
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  // Получение своих счетов (может сделать только пользователь). Вывод на странице профиля
+  const myGetInvoices = async (): Promise<TypeInvoiceMy[]> => {
+    try {
+      const res = await fetchData<TypeInvoiceMyDTO[]>('invoices/my');
+      return res ? res.map(invoiceMyMapDTO) : [];
     } catch (error) {
       throw error;
     }
@@ -45,5 +58,6 @@ export const useInvoicesStore = defineStore('invoice', () => {
     getInvoiceList,
     createInvoice,
     getUsersForInvoice,
+    myGetInvoices,
   };
 });
