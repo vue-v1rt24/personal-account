@@ -17,7 +17,6 @@ const myInvoices = ref<TypeInvoiceMy[]>();
 const myGetInvoices = async () => {
   try {
     myInvoices.value = await invoicesStore.myGetInvoices();
-    console.log(myInvoices.value);
   } catch (error) {
     console.log(error);
     codeMessage('Произошла ошибка при получении счетов пользователя', 'error');

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useUserStore } from './user.store';
 
 import { fetchData } from '@/utils/fetchData.utils';
 
@@ -11,6 +12,9 @@ import {
 
 //
 export const useProfileStore = defineStore('profile', () => {
+  // === Хранилище
+  const userStore = useUserStore();
+
   // === Действия
 
   // Получить профиль текущего пользователя
@@ -26,8 +30,18 @@ export const useProfileStore = defineStore('profile', () => {
   // Обновление профиля пользователя
   const updateProfile = async (fields: TypeProfile): Promise<TypeProfile | null> => {
     try {
-      const profile = await fetchData<TypeProfileUpdateDTO>('profile', 'PUT', fields);
-      return profile ? profileMapDTO(profile) : null;
+      // const profile = await fetchData<TypeProfileUpdateDTO>('profile', 'PUT', fields);
+      // return profile ? profileMapDTO(profile) : null;
+
+      const dataProfile = await fetchData<TypeProfileUpdateDTO>('profile', 'PUT', fields);
+
+      if (dataProfile) {
+        const profile = profileMapDTO(dataProfile);
+        userStore.updateUser(profile);
+        return profile;
+      }
+
+      return null;
     } catch (error) {
       throw error;
     }

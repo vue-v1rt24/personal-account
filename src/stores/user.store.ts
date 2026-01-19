@@ -22,8 +22,10 @@ export const useUserStore = defineStore(
     const getToken = computed(() => user.value?.token);
     const getUserEmail = computed(() => user.value?.email);
     const isAdmin = computed(() => user.value?.role === USER_ROLES.ADMIN);
+    const userName = computed(() => user.value?.name ?? user.value?.email);
 
     // === Действия
+    // Получение данных пользователя из БД
     const setUser = async (userData: TypeUserLoginForm) => {
       try {
         const {
@@ -35,6 +37,11 @@ export const useUserStore = defineStore(
       } catch (error) {
         throw error;
       }
+    };
+
+    // Изменение данных пользователя
+    const updateUser = (userData: { name: string; email: string; address: string }) => {
+      user.value && (user.value = { ...user.value, ...userData });
     };
 
     // Выход из учётной записи
@@ -54,10 +61,12 @@ export const useUserStore = defineStore(
     return {
       user,
       isUserAuth,
-      setUser,
-      getUserEmail,
       getToken,
+      getUserEmail,
       isAdmin,
+      userName,
+      setUser,
+      updateUser,
       logout,
     };
   },

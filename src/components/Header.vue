@@ -11,7 +11,7 @@ const userStore = useUserStore();
     <div class="logo">Сервисный центр</div>
 
     <ul class="header__links">
-      <li>Привет, пользователь</li>
+      <li>Привет, {{ userStore.userName }}</li>
       <li>
         <RouterLink :to="{ name: 'profile' }">Профиль</RouterLink>
       </li>
